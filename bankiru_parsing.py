@@ -259,7 +259,7 @@ def bankiru_parsing(pages_number: int, verbose = False):
     # Values of Series are set in numeric except value nan, which will be nan
     ratings["EXPERT_RA_prognosis"] = pd.to_numeric(ratings["EXPERT_RA_prognosis"], errors="coerce")
 
-    # ### Preprocessing of "EXPERT_RA_prognosis"
+    # Preprocessing of "EXPERT_RA_prognosis"
     ratings["NRA"] = ratings["NRA"].astype("str")
     ratings["NRA"].replace(to_replace="-2", value='-1', inplace=True)
     ratings["NRA"].replace(
@@ -295,7 +295,3 @@ def bankiru_parsing(pages_number: int, verbose = False):
 
     return ratings
 
-
-
-
-bankiru_parsing(11, True)
