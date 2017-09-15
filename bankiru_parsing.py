@@ -189,5 +189,90 @@ def bankiru_parsing(pages_number: int, verbose = False):
 
 data=bankiru_parsing(pages_number = 11)
 
+# Преобразование значений признаков к числовому формату / Transformation features to numeric format
+# (see **расшифровка-признаков-в-рейтингах-банков.docx** for understanding)
+
+data["num_of_lic"] = data["num_of_lic"].astype("str").astype(float).astype(int) 
+
+#Preprocessing of "l_in_foreign_MOODYS"
+data["l_in_foreign_MOODYS"] = data["l_in_foreign_MOODYS"].astype("str")
+data["l_in_foreign_MOODYS"].replace(to_replace = ["C","Ca","Caa3","Caa2","Caa1","B3","B2","B1", "Ba3", "Ba2", "Ba1", "Baa3","Baa2", "Baa1", "A3","A2","A1", "Aa3", "Aa2", "Aa1", "Aaa", "nan"], value = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,np.nan], inplace = True)
+#Values of Series are set in numeric except value "nan", which will be NaN
+data["l_in_foreign_MOODYS"] = pd.to_numeric(data["l_in_foreign_MOODYS"], errors="coerce")
+
+#Preprocessing of "l_in_nat_MOODYS"
+data["l_in_nat_MOODYS"] = data["l_in_nat_MOODYS"].astype("str")
+data["l_in_nat_MOODYS"].replace(to_replace = ["C","Ca","Caa3","Caa2","Caa1","B3","B2","B1", "Ba3", "Ba2", "Ba1", "Baa3","Baa2", "Baa1", "A3","A2","A1", "Aa3", "Aa2", "Aa1", "Aaa", "nan"], value = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,np.nan], inplace = True)
+#Values of Series are set in numeric except value "nan", which will be NaN
+data["l_in_nat_MOODYS"] = pd.to_numeric(data["l_in_nat_MOODYS"], errors="coerce")
+
+#Preprocessing of "MOODYS"
+data["MOODYS"] = data["MOODYS"].astype("str")
+data["MOODYS"].replace(to_replace = ['негативный', 'стабильный', 'позитивный'], value = [0,1,2], inplace = True)
+#Values of Series are set in numeric except value nan, which will be NaN
+data["MOODYS"] = pd.to_numeric(data["MOODYS"], errors="coerce")
+
+#Preprocessing of "s_in_foreign_MOODYS"
+data["s_in_foreign_MOODYS"].replace(to_replace = ['NP','P-3','P-2','P-1', "отозван"], value = [0,1,2,3,-1], inplace = True)
+
+#Preprocessing of "s_in_nat_MOODYS"
+data["s_in_nat_MOODYS"].replace(to_replace = ['NP','P-3','P-2','P-1', "отозван"], value = [0,1,2,3,-1], inplace = True)
+
+#Preprocessing of "on_nat_MOODYS"
+data["on_nat_MOODYS"] = data["on_nat_MOODYS"].astype("str")
+#Values of Series are set in numeric except "nan" and trully string vars, which will be NaN
+data["on_nat_MOODYS"] = pd.to_numeric(data["on_nat_MOODYS"], errors="coerce")
+
+#Preprocessing of "fin_stab_MOODYS" 
+data["fin_stab_MOODYS"] = data["fin_stab_MOODYS"].astype("str")
+data["fin_stab_MOODYS"].replace(to_replace = ['E-', 'E', 'E+', "D-","D","D+", "C-","C", "C+", "B-", "B", "B+", "A"],value =[0,1,2,3,4,5,6,7,8,9,10,11,12], inplace = True)
+#Values of Series are set in numeric except value "nan", which will be NaN
+data["fin_stab_MOODYS"] = pd.to_numeric(data["fin_stab_MOODYS"], errors="coerce")
+
+#Preprocessing of "EXPERT_RA"
+data["EXPERT_RA"] = data["EXPERT_RA"].astype("str")
+data["EXPERT_RA"].replace(to_replace = "-2", value = '-1', inplace = True)
+#providing same format
+data["EXPERT_RA"].replace(to_replace = ['D', 'RD', "C", "CC", "CCC","B-", "B", "B+", "BB-", "BB", "BB+", "BBB-", "BBB", "BBB+", "A-", "A", "A+", "AA-", "AA", "AA+", "AAA", "C++", "B++", "A++"], value = ['ruD', 'ruRD', "ruC", "ruCC", "ruCCC","ruB-", "ruB", "ruB+",                  "ruBB-", "ruBB", "ruBB+", "ruBBB-", "ruBBB", "ruBBB+", "ruA-", "ruA", "ruA+", "ruAA-", "ruAA", "ruAA+", "ruAAA", "ruCCC", "ruBB-", "ruAA-"], inplace = True)
+data["EXPERT_RA"].replace(to_replace = ['ruD', 'ruRD', "ruC", "ruCC", "ruCCC","ruB-", "ruB", "ruB+", "ruBB-","ruBB", "ruBB+", "ruBBB-", "ruBBB", "ruBBB+", "ruA-", "ruA", "ruA+", "ruAA-", "ruAA", "ruAA+", "ruAAA"], value = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20], inplace = True)
+
+#Values of Series are set in numeric except value "nan", which will be NaN
+data["EXPERT_RA"] = pd.to_numeric(data["EXPERT_RA"], errors="coerce")
+
+#Preprocessing of "EXPERT_RA_prognosis"
+data["EXPERT_RA_prognosis"] = data["EXPERT_RA_prognosis"].astype("str")
+data["EXPERT_RA_prognosis"].replace(to_replace = ['негативный', 'стабильный', 'позитивный'], value = [0,1,2], inplace = True)
+#Values of Series are set in numeric except value nan, which will be nan
+data["EXPERT_RA_prognosis"] = pd.to_numeric(data["EXPERT_RA_prognosis"], errors="coerce")
+
+
+# ### Preprocessing of "EXPERT_RA_prognosis"
+data["NRA"] = data["NRA"].astype("str")
+data["NRA"].replace(to_replace = "-2", value = '-1', inplace = True)
+data["NRA"].replace(to_replace = ['D', 'C-', "C", "C+","CC-", "CC", "CC+", "B-", "B", "B+", "BB-","BB", "BB+", "BBB-", "BBB", "BBB+", "A-", "A", "A+", "AA-", "AA", "AA+", "AAA"], value = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22], inplace = True)
+#Values of Series are set in numeric except value "nan", which will be NaN
+data["NRA"] = pd.to_numeric(data["NRA"], errors="coerce")
+
+
+#Preprocessing of "NRA_prognosis"
+data["NRA_prognosis"] = data["NRA_prognosis"].astype("str")
+data["NRA_prognosis"].replace(to_replace = ['негативный', 'стабильный', 'позитивный'], value = [0,1,2], inplace = True)
+#Values of Series are set in numeric except value nan, which will be nan
+data["NRA_prognosis"] = pd.to_numeric(data["NRA_prognosis"], errors="coerce")
+
+#Preprocessing of "AK&M"
+data["AK&M"] = data["AK&M"].astype("str")
+data["AK&M"].replace(to_replace = "-2", value = '-1', inplace = True)
+data["AK&M"].replace(to_replace = ['D', 'C', "C+","C++", "B", "B+", "B++", "A", "A+", "A++"], value = [0,1,2,3,4,5,6,7,8,9], inplace = True)
+#Values of Series are set in numeric except value "nan", which will be NaN
+data["AK&M"] = pd.to_numeric(data["AK&M"], errors="coerce")
+
+#Preprocessing of "AK&M_prognosis"
+data["AK&M_prognosis"] = data["AK&M_prognosis"].astype("str")
+data["AK&M_prognosis"].replace(to_replace = ['негативный', 'стабильный', 'позитивный'], value = [0,1,2], inplace = True)
+
+#Values of Series are set in numeric except value nan, which will be nan
+data["AK&M_prognosis"] = pd.to_numeric(data["AK&M_prognosis"], errors="coerce")
+
 
 
